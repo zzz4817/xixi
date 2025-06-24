@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECAM 授权小工具</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900">
+  <!-- Modal Overlay -->
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 modal-overlay">
+    <!-- Modal Content -->
+    <div class="w-full max-w-lg rounded-lg shadow-lg bg-gray-800">
+      <!-- Modal Header -->
+      <div class="bg-blue-900 rounded-t-lg px-6 py-4 flex items-center">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=48&h=48&facepad=2" alt="ECAM Logo" class="w-10 h-10 rounded-full mr-3">
+        <h2 class="text-white text-xl font-semibold">ECAM 授权小工具</h2>
+      </div>
+      <!-- Modal Body -->
+      <div class="px-6 py-6 space-y-5">
+        <!-- 文件路径 -->
+        <div>
+          <label for="file-path" class="block text-gray-300 mb-1">文件路径</label>
+          <div class="flex gap-2">
+            <input type="text" id="file-path" class="flex-1 bg-gray-700 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" value="d:/temp_ecam/ApplyKey_20250621113829" placeholder="请选择或输入文件路径">
+            <button type="button" class="bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-800 transition" onclick="document.getElementById('file-input').click()">浏览</button>
+            <input type="file" id="file-input" class="hidden" onchange="handleFilePath(event)">
+          </div>
+        </div>
+        <!-- 功能授权 -->
+        <div>
+          <label class="block text-gray-300 mb-1">功能授权</label>
+          <div class="flex gap-6">
+            <label class="inline-flex items-center text-gray-300">
+              <input type="checkbox" class="form-checkbox accent-blue-600" name="feature" value="review" checked>
+              <span class="ml-2">复核</span>
+            </label>
+            <label class="inline-flex items-center text-gray-300">
+              <input type="checkbox" class="form-checkbox accent-blue-600" name="feature" value="dfm" checked>
+              <span class="ml-2">DFM分析</span>
+            </label>
+            <label class="inline-flex items-center text-gray-300">
+              <input type="checkbox" class="form-checkbox accent-blue-600" name="feature" value="cam" checked>
+              <span class="ml-2">CAM设计</span>
+            </label>
+          </div>
+        </div>
+        <!-- 企业名称 -->
+        <div>
+          <label for="company-name" class="block text-gray-300 mb-1">企业名称</label>
+          <input type="text" id="company-name" class="w-full bg-gray-700 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="请输入企业名称">
+        </div>
+        <!-- 用户名 -->
+        <div>
+          <label for="username" class="block text-gray-300 mb-1">用户名</label>
+          <input type="text" id="username" class="w-full bg-gray-700 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="请输入用户名">
+        </div>
+        <!-- 证书生成路径 -->
+        <div>
+          <label for="certificate-path" class="block text-gray-300 mb-1">证书生成路径</label>
+          <div class="flex gap-2">
+            <input type="text" id="certificate-path" class="flex-1 bg-gray-700 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" value="d:/temp_ecam" placeholder="请选择或输入证书生成路径">
+            <button type="button" class="bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-800 transition" onclick="document.getElementById('folder-input').click()">浏览</button>
+            <input type="file" id="folder-input" class="hidden" webkitdirectory directory onchange="handleFolderPath(event)">
+          </div>
+        </div>
+        <!-- 操作人 -->
+        <div>
+          <label for="operator" class="block text-gray-300 mb-1">操作人</label>
+          <input type="text" id="operator" class="w-full bg-gray-700 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="请输入操作人">
+        </div>
+      </div>
+      <!-- Modal Footer -->
+      <div class="px-6 py-4 bg-gray-700 rounded-b-lg flex justify-end gap-3">
+        <button class="px-5 py-2 rounded bg-gray-500 text-white hover:bg-gray-600 transition" onclick="closeModal()">取消</button>
+        <button class="px-5 py-2 rounded bg-blue-900 text-white font-semibold hover:bg-blue-800 transition" onclick="submitForm()">确认</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    function closeModal() {
+      document.querySelector('.modal-overlay').style.display = 'none';
+    }
+    function handleFilePath(event) {
+      const input = event.target;
+      if (input.files.length > 0) {
+        document.getElementById('file-path').value = input.files[0].path || input.files[0].name;
+      }
+    }
+    function handleFolderPath(event) {
+      const input = event.target;
+      if (input.files.length > 0) {
+        // 取第一个文件的父目录
+        const path = input.files[0].webkitRelativePath || input.files[0].name;
+        const folder = path.split('/')[0];
+        document.getElementById('certificate-path').value = folder;
+      }
+    }
+    function submitForm() {
+      // 获取表单数据并处理
+      // ...
+      alert('授权信息已提交！');
+      closeModal();
+    }
+  </script>
+</body>
+</html> 
