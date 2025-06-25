@@ -9,14 +9,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
 
         :root {
-            --primary-color: #4258b1; /* Updated primary color */
+            --primary-color: #34495e; /* Updated primary color */
             --secondary-color: #6c757d;
             --success-color: #28a745;
             --light-color: #f8f9fa;
             --dark-color: #343a40;
             --border-color: #dee2e6;
             --background-color: #f4f7f9;
-            --header-bg: #4258b1; /* Updated header background color */
+            --header-bg: #34495e; /* Updated header background color */
         }
 
         * {
@@ -172,8 +172,8 @@
         }
         
         .checkbox-container input:checked + .checkbox-custom {
-            background-color: var(--success-color);
-            border-color: var(--success-color);
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
         }
         
         .checkbox-container input:checked + .checkbox-custom .icon-check {
@@ -228,6 +228,24 @@
             padding: 5px 12px;
             border-radius: 6px;
         }
+
+        .operator-input {
+            font-weight: bold;
+            color: var(--dark-color);
+            background-color: #e9ecef;
+            padding: 5px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            width: 80px;
+            text-align: center;
+            font-family: inherit;
+            font-size: inherit;
+        }
+        .operator-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 73, 94, 0.25);
+        }
         
         .btn-confirm {
             background-color: var(--primary-color);
@@ -236,8 +254,8 @@
             font-size: 16px;
         }
         .btn-confirm:hover {
-            background-color: #364a97; /* Darker shade for hover effect */
-            box-shadow: 0 4px 15px rgba(66, 88, 177, 0.3); /* Adjust shadow color */
+            background-color: #2c3e50; /* Darker shade for hover effect */
+            box-shadow: 0 4px 15px rgba(52, 73, 94, 0.3); /* Adjust shadow color */
         }
         
     </style>
@@ -253,13 +271,13 @@
             <div class="form-row">
                 <label class="form-label" for="filePath">文件路径</label>
                 <div class="input-group">
-                    <input type="text" id="filePath" class="form-input" value="d:/temp_ecam/ApplyKey_20250621113829" readonly>
-                    <button class="btn btn-load">Load</button>
+                    <input type="text" id="filePath" class="form-input" value="d:/temp_ecam">
+                    <button class="btn btn-load" onclick="selectFile('filePath')">Load</button>
                 </div>
             </div>
 
             <div class="form-row">
-                <label class="form-label">功能模块</label>
+                <label class="form-label">功能授权</label>
                 <div class="modules-group">
                     <label class="checkbox-container">
                         <input type="checkbox" checked>
@@ -301,19 +319,47 @@
             <div class="form-row">
                 <label class="form-label" for="certPath">证书生成路径</label>
                 <div class="input-group">
-                    <input type="text" id="certPath" class="form-input" value="d:/temp_ecam" readonly>
-                    <button class="btn btn-load">Load</button>
+                    <input type="text" id="certPath" class="form-input" value="d:/temp_ecam">
+                    <button class="btn btn-load" onclick="selectFile('certPath')">Load</button>
                 </div>
             </div>
         </main>
 
         <footer class="tool-footer">
             <div class="operator-info">
-                操作人: <span>1</span>
+                操作人:
+                <input list="operators" id="operatorInput" name="operator" class="operator-input" value="1">
+                <datalist id="operators">
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="Admin"></option>
+                </datalist>
             </div>
             <button class="btn btn-confirm">确认</button>
         </footer>
     </div>
 
+    <script>
+        function selectFile(inputId) {
+            const inputElement = document.getElementById(inputId);
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.style.display = 'none';
+
+            fileInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    // NOTE: For security reasons, browsers do not provide the full file path.
+                    // This will set the input's value to the filename only.
+                    // In a controlled environment like Electron, you could access 'file.path'.
+                    inputElement.value = file.name;
+                }
+            });
+
+            document.body.appendChild(fileInput);
+            fileInput.click();
+            document.body.removeChild(fileInput);
+        }
+    </script>
 </body>
 </html>
