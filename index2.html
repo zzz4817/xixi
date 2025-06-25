@@ -214,11 +214,6 @@
             align-items: center;
         }
         
-        .footer-buttons {
-            display: flex;
-            gap: 15px;
-        }
-        
         .operator-info {
             display: flex;
             align-items: center;
@@ -263,16 +258,6 @@
             box-shadow: 0 4px 15px rgba(64, 92, 184, 0.3); /* Adjust shadow color */
         }
         
-        .btn-exit {
-            background-color: var(--secondary-color);
-            color: white;
-            padding: 12px 30px;
-            font-size: 16px;
-        }
-        .btn-exit:hover {
-            background-color: #5a6268;
-        }
-
     </style>
 </head>
 <body>
@@ -341,21 +326,16 @@
         </main>
 
         <footer class="tool-footer">
-            <div class="footer-buttons">
-                <div class="operator-info">
-                    操作人:
-                    <input list="operators" id="operatorInput" name="operator" class="operator-input" value="1">
-                    <datalist id="operators">
-                        <option value="1"></option>
-                        <option value="2"></option>
-                        <option value="Admin"></option>
-                    </datalist>
-                </div>
+            <div class="operator-info">
+                操作人:
+                <input list="operators" id="operatorInput" name="operator" class="operator-input" value="1">
+                <datalist id="operators">
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="Admin"></option>
+                </datalist>
             </div>
-            <div class="footer-buttons">
-                <button class="btn btn-exit" onclick="exitApp()">退出</button>
-                <button class="btn btn-confirm">确认</button>
-            </div>
+            <button class="btn btn-confirm">确认</button>
         </footer>
     </div>
 
@@ -379,12 +359,6 @@
             document.body.appendChild(fileInput);
             fileInput.click();
             document.body.removeChild(fileInput);
-        }
-
-        function exitApp() {
-            // 注意：这个函数只在某些环境下（如Electron）或由脚本打开的窗口中才能真正关闭窗口。
-            // 在普通浏览器标签页中，它可能不会生效。
-            window.close();
         }
     </script>
 </body>
