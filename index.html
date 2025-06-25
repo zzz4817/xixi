@@ -5,20 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ECAM授权小工具</title>
     <style>
-        /* --- 全局样式重置与字体设定 --- */
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
-
         :root {
-            --primary-color: #405CB8; /* 用户指定的新蓝色 */
+            --primary-color: #405CB8;
+            --primary-hover-color: #354c9a;
             --secondary-color: #6c757d;
-            --success-color: #28a745;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
+            --secondary-hover-color: #5a6268;
+            --light-gray-color: #f8f9fa;
             --border-color: #dee2e6;
-            --background-color: #f4f7f9;
-            --header-bg: #405CB8; /* 与主色一致的标题栏蓝色 */
+            --text-color: #343a40;
+            --label-color: #495057;
+            --background-color: #f0f2f5;
+            --white-color: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.07);
         }
 
+        /* --- 全局样式 --- */
         * {
             margin: 0;
             padding: 0;
@@ -26,119 +27,114 @@
         }
 
         body {
-            font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
             background-color: var(--background-color);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
-            color: var(--dark-color);
+            padding: 24px;
+            color: var(--text-color);
+            font-size: 14px;
         }
 
-        /* --- 主容器样式 --- */
-        .auth-tool-container {
+        /* --- 主容器 --- */
+        .container {
             width: 100%;
-            max-width: 700px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 650px;
+            background-color: var(--white-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 25px var(--shadow-color);
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
 
-        /* --- 头部样式 --- */
-        .tool-header {
-            background-color: var(--header-bg);
-            color: white;
-            padding: 20px 25px;
+        /* --- 头部 --- */
+        .header {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            padding: 16px 24px;
             text-align: center;
         }
 
-        .tool-header h1 {
-            font-size: 22px;
+        .header h1 {
+            font-size: 18px;
             font-weight: 500;
-            margin: 0;
         }
 
-        /* --- 表单区域样式 --- */
-        .tool-body {
-            padding: 30px 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 25px; /* 行间距 */
-        }
-        
-        .form-row {
+        /* --- 主体表单 --- */
+        .main-content {
+            padding: 32px;
             display: grid;
-            grid-template-columns: 120px 1fr auto; /* 标签 | 输入框 | 按钮 */
+            grid-template-columns: 110px 1fr;
+            gap: 20px 16px;
             align-items: center;
-            gap: 15px;
         }
-        
+
         .form-label {
             font-weight: 500;
-            font-size: 15px;
-            color: var(--secondary-color);
+            color: var(--label-color);
             text-align: right;
         }
+        
+        /* --- 跨列元素 --- */
+        .full-width {
+            grid-column: 1 / -1;
+        }
 
-        /* --- 输入框和按钮组合 --- */
+        /* --- 输入框组合 --- */
         .input-group {
             display: flex;
-            grid-column: 2 / span 2; /* 跨越输入框和按钮两列 */
         }
 
         .form-input {
             flex-grow: 1;
-            padding: 10px 15px;
-            font-size: 15px;
+            padding: 8px 12px;
             border: 1px solid var(--border-color);
-            border-radius: 6px 0 0 6px;
-            background-color: var(--light-color);
-            transition: border-color 0.3s, box-shadow 0.3s;
-            color: #333;
+            border-radius: 4px;
+            background-color: var(--white-color);
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
-
         .form-input:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
-            z-index: 2;
+            box-shadow: 0 0 0 3px rgba(64, 92, 184, 0.2);
         }
         
+        .input-group .form-input {
+            border-radius: 4px 0 0 4px;
+        }
+
+        /* --- 按钮 --- */
         .btn {
-            padding: 10px 20px;
-            font-size: 15px;
+            padding: 8px 16px;
+            font-size: 14px;
             font-weight: 500;
             border: 1px solid transparent;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
+            transition: background-color 0.2s, transform 0.1s;
         }
-        
         .btn:hover {
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
-        
+
         .btn-load {
             background-color: var(--secondary-color);
-            color: white;
-            border-radius: 0 6px 6px 0;
-            border-left: none;
+            color: var(--white-color);
+            border-radius: 0 4px 4px 0;
         }
         .btn-load:hover {
-            background-color: #5a6268;
+            background-color: var(--secondary-hover-color);
         }
-        
-        /* --- 复选框模块样式 --- */
+
+        /* --- 复选框 --- */
         .modules-group {
-            grid-column: 2 / span 2;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 10px 0;
+            padding: 8px 0;
+            background-color: var(--light-gray-color);
+            border-radius: 4px;
         }
 
         .checkbox-container {
@@ -148,213 +144,114 @@
         }
         
         .checkbox-container input {
-            display: none; /* 隐藏原生checkbox */
-        }
-        
-        .checkbox-custom {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--border-color);
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            accent-color: var(--primary-color);
+            width: 16px;
+            height: 16px;
             margin-right: 8px;
-            transition: all 0.3s;
-        }
-        
-        .checkbox-custom .icon-check {
-            display: none;
-            width: 14px;
-            height: 14px;
-            stroke: white;
-            stroke-width: 3;
-        }
-        
-        .checkbox-container input:checked + .checkbox-custom {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-        
-        .checkbox-container input:checked + .checkbox-custom .icon-check {
-            display: block;
         }
 
-        .checkbox-label {
-            font-size: 15px;
-        }
-
-        /* --- 用户信息行特殊布局 --- */
-        .user-info-row {
-            grid-column: 1 / -1; /* 占据整行 */
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        .user-field {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .user-field .form-label {
-            text-align: left;
-            margin-left: 5px;
-        }
-        .user-field .form-input {
-            border-radius: 6px; /* 独立输入框有完整圆角 */
-        }
-
-        /* --- 底部操作区域 --- */
-        .tool-footer {
-            padding: 20px 25px;
-            background-color: var(--light-color);
+        /* --- 底部 --- */
+        .footer {
+            padding: 16px 24px;
+            background-color: var(--light-gray-color);
             border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
-        .footer-buttons {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .operator-info {
+        .operator-group {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 15px;
-            color: var(--secondary-color);
-        }
-        .operator-info span {
-            font-weight: bold;
-            color: var(--dark-color);
-            background-color: #e9ecef;
-            padding: 5px 12px;
-            border-radius: 6px;
+            gap: 8px;
         }
 
         .operator-input {
-            font-weight: bold;
-            color: var(--dark-color);
-            background-color: #e9ecef;
-            padding: 5px 12px;
-            border-radius: 6px;
+            padding: 6px 10px;
             border: 1px solid var(--border-color);
+            border-radius: 4px;
             width: 80px;
             text-align: center;
-            font-family: inherit;
-            font-size: inherit;
-        }
-        .operator-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(52, 73, 94, 0.25);
         }
         
-        .btn-confirm {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 12px 30px;
-            font-size: 16px;
-        }
-        .btn-confirm:hover {
-            background-color: #324a9e; /* 新蓝色的深色悬停效果 */
-            box-shadow: 0 4px 15px rgba(64, 92, 184, 0.3); /* Adjust shadow color */
-        }
-        
-        .btn-exit {
-            background-color: var(--secondary-color);
-            color: white;
-            padding: 12px 30px;
-            font-size: 16px;
-        }
-        .btn-exit:hover {
-            background-color: #5a6268;
+        .action-buttons {
+            display: flex;
+            gap: 12px;
         }
 
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-hover-color);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--white-color);
+        }
+        .btn-secondary:hover {
+            background-color: var(--secondary-hover-color);
+        }
     </style>
 </head>
 <body>
-
-    <div class="auth-tool-container">
-        <header class="tool-header">
+    <div class="container">
+        <header class="header">
             <h1>ECAM授权小工具</h1>
         </header>
 
-        <main class="tool-body">
-            <div class="form-row">
-                <label class="form-label" for="filePath">文件路径</label>
-                <div class="input-group">
-                    <input type="text" id="filePath" class="form-input" value="d:/temp_ecam">
-                    <button class="btn btn-load" onclick="selectFile('filePath')">Load</button>
-                </div>
+        <main class="main-content">
+            <label class="form-label" for="companyName">企业名称</label>
+            <input type="text" id="companyName" class="form-input" placeholder="请输入企业名称">
+
+            <label class="form-label" for="username">用户名</label>
+            <input type="text" id="username" class="form-input" placeholder="请输入用户名">
+
+            <label class="form-label" for="filePath">文件路径</label>
+            <div class="input-group">
+                <input type="text" id="filePath" class="form-input" value="d:/temp_ecam">
+                <button class="btn btn-load" onclick="selectFile('filePath')">...</button>
             </div>
 
-            <div class="form-row">
-                <label class="form-label">功能授权</label>
-                <div class="modules-group">
-                    <label class="checkbox-container">
-                        <input type="checkbox" checked>
-                        <span class="checkbox-custom">
-                            <svg class="icon-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                        </span>
-                        <span class="checkbox-label">复核</span>
-                    </label>
-                    <label class="checkbox-container">
-                        <input type="checkbox" checked>
-                           <span class="checkbox-custom">
-                               <svg class="icon-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                           </span>
-                        <span class="checkbox-label">DFM分析</span>
-                    </label>
-                    <label class="checkbox-container">
-                        <input type="checkbox" checked>
-                           <span class="checkbox-custom">
-                               <svg class="icon-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                           </span>
-                        <span class="checkbox-label">CAM设计</span>
-                    </label>
-                </div>
+            <label class="form-label" for="certPath">证书生成路径</label>
+            <div class="input-group">
+                <input type="text" id="certPath" class="form-input" value="d:/temp_ecam">
+                <button class="btn btn-load" onclick="selectFile('certPath')">...</button>
             </div>
             
-            <div class="form-row">
-                <div class="user-info-row">
-                    <div class="user-field">
-                           <label class="form-label" for="companyName">企业名称</label>
-                           <input type="text" id="companyName" class="form-input" placeholder="请输入企业名称">
-                    </div>
-                    <div class="user-field">
-                        <label class="form-label" for="username">用户名</label>
-                        <input type="text" id="username" class="form-input" placeholder="请输入用户名">
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <label class="form-label" for="certPath">证书生成路径</label>
-                <div class="input-group">
-                    <input type="text" id="certPath" class="form-input" value="d:/temp_ecam">
-                    <button class="btn btn-load" onclick="selectFile('certPath')">Load</button>
-                </div>
+            <label class="form-label">功能授权</label>
+            <div class="modules-group">
+                <label class="checkbox-container">
+                    <input type="checkbox" checked>
+                    <span>复核</span>
+                </label>
+                <label class="checkbox-container">
+                    <input type="checkbox" checked>
+                    <span>DFM分析</span>
+                </label>
+                <label class="checkbox-container">
+                    <input type="checkbox" checked>
+                    <span>CAM设计</span>
+                </label>
             </div>
         </main>
 
-        <footer class="tool-footer">
-            <div class="footer-buttons">
-                <div class="operator-info">
-                    操作人:
-                    <input list="operators" id="operatorInput" name="operator" class="operator-input" value="1">
-                    <datalist id="operators">
-                        <option value="1"></option>
-                        <option value="2"></option>
-                        <option value="Admin"></option>
-                    </datalist>
-                </div>
+        <footer class="footer">
+            <div class="operator-group">
+                <label for="operatorInput">操作人:</label>
+                <input list="operators" id="operatorInput" name="operator" class="operator-input" value="张敏">
+                <datalist id="operators">
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="Admin"></option>
+                    <option value="张敏"></option>
+                </datalist>
             </div>
-            <div class="footer-buttons">
-                <button class="btn btn-exit" onclick="exitApp()">退出</button>
-                <button class="btn btn-confirm">确认</button>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="exitApp()">退出</button>
+                <button class="btn btn-primary">确认</button>
             </div>
         </footer>
     </div>
@@ -369,9 +266,6 @@
             fileInput.addEventListener('change', (event) => {
                 const file = event.target.files[0];
                 if (file) {
-                    // NOTE: For security reasons, browsers do not provide the full file path.
-                    // This will set the input's value to the filename only.
-                    // In a controlled environment like Electron, you could access 'file.path'.
                     inputElement.value = file.name;
                 }
             });
@@ -382,8 +276,6 @@
         }
 
         function exitApp() {
-            // 注意：这个函数只在某些环境下（如Electron）或由脚本打开的窗口中才能真正关闭窗口。
-            // 在普通浏览器标签页中，它可能不会生效。
             window.close();
         }
     </script>
